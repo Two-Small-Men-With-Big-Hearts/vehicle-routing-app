@@ -1,5 +1,5 @@
 "use client";
-// redeploy
+
 import {
   Accordion,
   AccordionContent,
@@ -28,7 +28,7 @@ export default function RouteAccordion({ route }: { route: Route }) {
     displayDealNames += ", ...";
   }
 
-  const depotName = route.nodes[0]?.address || "Depot";
+  const depotName = route.nodes[0]?.address || "Depot:";
 
   return (
     <Accordion type="single" collapsible className="w-full max-w-3x1 mx-auto mb-4 border rounded-md shadow-sm bg-white">
