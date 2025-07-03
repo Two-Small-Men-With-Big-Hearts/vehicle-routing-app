@@ -31,7 +31,7 @@ export default function RouteAccordion({ route }: { route: Route }) {
   const depotName = route.nodes[0]?.address || "Depot";
 
   return (
-    <Accordion type="single" collapsible className="w-full max-w-lg mx-auto mb-4 border rounded-md shadow-sm bg-white">
+    <Accordion type="single" collapsible className="w-full max-w-3x1 mx-auto mb-4 border rounded-md shadow-sm bg-white">
       <AccordionItem value="item-1">
         <AccordionTrigger className="flex justify-between px-4 py-3">
           <div className="flex flex-col text-left">
