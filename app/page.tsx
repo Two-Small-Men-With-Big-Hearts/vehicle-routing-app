@@ -18,12 +18,14 @@ type Route = {
 export default function Page() {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [loading, setLoading] = useState(false);
+  
 
   const fetchRoutes = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes"); // 👈 Replace with your actual Heroku URL
+      const res = await fetch("https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes");
       const data = await res.json();
+      console.log("Routes received from backend:", data);
       setRoutes(data);
     } catch (error) {
       console.error("Failed to fetch routes:", error);
