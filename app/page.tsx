@@ -81,7 +81,7 @@ export default function Page() {
 
       <div className="w-full max-w-3xl">
         {routes.map((route, idx) => (
-          <RouteAccordion key={idx} route={route} />
+          <RouteAccordion key={idx} route={route} highlightID={inputId} />
         ))}
       </div>
     </div>

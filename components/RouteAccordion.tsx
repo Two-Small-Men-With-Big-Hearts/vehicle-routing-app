@@ -19,7 +19,7 @@ type Route = {
   nodes: Node[];
 };
 
-export default function RouteAccordion({ route }: { route: Route }) {
+export default function RouteAccordion({ route, highlightID }: { route: Route; highlightID?: string }) {
   const uniqueDealNames = Array.from(new Set(route.nodes.map(n => n.dealname).filter(Boolean)));
   const numDeals = uniqueDealNames.length;
 
@@ -30,6 +30,10 @@ export default function RouteAccordion({ route }: { route: Route }) {
 
   const depotName = route.nodes[0]?.address || "Depot:";
 
+    const containsDeal = highlightID
+    ? route.nodes.some(node => node.id === highlightID)
+    : false;
+
   return (
     <Accordion type="single" collapsible className="w-full max-w-3x1 mx-auto mb-4 border rounded-md shadow-sm bg-white">
       <AccordionItem value="item-1">
@@ -38,6 +42,12 @@ export default function RouteAccordion({ route }: { route: Route }) {
             <span className="text-base font-medium text-gray-800">Depot: {depotName} | Deal Matchup ({numDeals} deals)</span>
             <span className="text-sm text-gray-600">Deals: {displayDealNames}</span>
           </div>
+          {containsDeal && (
+            <span className="ml-2 px-2 py-0.5 text-green-700 bg-green-100 rounded-full text-xs font-semibold whitespace-nowrap">
+              Contains ID ✅
+            </span>
+
+          )}
         </AccordionTrigger>
         <AccordionContent className="bg-gray-50 px-4 py-3 rounded-b-md">
           <p className="text-gray-700"><strong>Depot:</strong> {depotName}</p>
