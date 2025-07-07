@@ -60,6 +60,14 @@ export default function Page() {
           {loadingAll ? "Loading..." : "Fetch All"}
         </button>
 
+        <button
+          onClick={fetchRouteById}
+          disabled={loadingId || !inputId}
+          className="px-6 py-3 bg-black text-white rounded-md text-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
+        >
+          {loadingId ? "Loading..." : "Fetch by ID"}
+        </button>
+
         <input
           type="text"
           placeholder="Enter Deal ID"
@@ -68,13 +76,6 @@ export default function Page() {
           className="px-4 py-2 border border-gray-300 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-black"
         />
 
-        <button
-          onClick={fetchRouteById}
-          disabled={loadingId || !inputId}
-          className="px-6 py-3 bg-black text-white rounded-md text-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
-        >
-          {loadingId ? "Loading..." : "Fetch by ID"}
-        </button>
       </div>
 
       <div className="w-full max-w-3xl">
