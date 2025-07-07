@@ -52,12 +52,12 @@ export default function RouteAccordion({ route, highlightID }: { route: Route; h
         <AccordionContent className="bg-gray-50 px-4 py-3 rounded-b-md">
           <p className="text-gray-700"><strong>Depot:</strong> {depotName}</p>
           <p className="text-gray-700"><strong>Total Distance:</strong> {route.total_distance} km</p>
-          <p className="text-gray-700"><strong>Total Time:</strong> {route.total_time} minutes</p>
+          <p className="text-gray-700"><strong>Total Time:</strong> {Math.floor(route.total_time/60/10)} Days {(route.total_time/60%10).toFixed(2)} hours</p>
           <h5 className="mt-2 mb-1 font-semibold text-gray-800">Stops:</h5>
           <ul className="list-disc list-inside text-gray-700">
             {route.nodes.map((node, idx) => (
               <li key={idx}>
-                <strong>{node.dealname || "No Deal Name"}</strong> — {node.address} (ID: {node.id})
+                <strong>{node.dealname || "Depot"}</strong> — {node.address} (ID: {node.id})
               </li>
             ))}
           </ul>
