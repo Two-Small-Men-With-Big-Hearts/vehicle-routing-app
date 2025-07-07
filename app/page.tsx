@@ -16,14 +16,14 @@ type Route = {
 };
 
 export default function Page() {
-  const [routes, setRoutes] = useState<Route[]>([]); // routes
-  const [loading, setLoading] = useState(false); // loading animation
+  const [routes, setRoutes] = useState<Route[]>([]); 
+  const [loadingAll, setLoadingAll] = useState(false); // loading state for Fetch All
+  const [loadingId, setLoadingId] = useState(false);   // loading state for Fetch by ID
   const [inputId, setInputId] = useState("");
-  
-  // fetching and computing best routes across canada for all trucks
+
   const fetchRoutes = async () => {
     try {
-      setLoading(true);
+      setLoadingAll(true);
       const res = await fetch("https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes");
       const data = await res.json();
       console.log("Routes received from backend:", data);
@@ -31,35 +31,33 @@ export default function Page() {
     } catch (error) {
       console.error("Failed to fetch routes:", error);
     } finally {
-      setLoading(false);
+      setLoadingAll(false);
     }
   };
 
-  // fetching and computing best matchup(s) for a deal by ID
-
   const fetchRouteById = async () => {
-    try{
-      setLoading(true);
-      const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes/${inputId}`) 
+    try {
+      setLoadingId(true);
+      const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes/${inputId}`);
       const data = await res.json();
-      console.log(`Data Recieved: ${data}`)
+      console.log(`Data Received: ${data}`);
       setRoutes(data);
-    } catch(error){
+    } catch (error) {
       console.log("Failed to fetch by ID");
-    } finally{
-      setLoading(false);
+    } finally {
+      setLoadingId(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen py-10 bg-gray-100">
       <div className="flex flex-wrap justify-center gap-3 mb-8">
         <button
           onClick={fetchRoutes}
-          disabled={loading}
+          disabled={loadingAll}
           className="px-6 py-3 bg-black text-white rounded-md text-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
         >
-          {loading ? "Loading..." : "Fetch All"}
+          {loadingAll ? "Loading..." : "Fetch All"}
         </button>
 
         <input
@@ -72,10 +70,10 @@ export default function Page() {
 
         <button
           onClick={fetchRouteById}
-          disabled={loading || !inputId}
+          disabled={loadingId || !inputId}
           className="px-6 py-3 bg-black text-white rounded-md text-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
         >
-          {loading ? "Loading..." : "Fetch by ID"}
+          {loadingId ? "Loading..." : "Fetch by ID"}
         </button>
       </div>
 
