@@ -49,9 +49,9 @@ export default function FetchIdPage() {
           placeholder="Enter Deal ID"
           value={inputId}
           onChange={(e) => setInputId(e.target.value)}
-          className="w-64"
+          className="w-64 h-12"
         />
-        <Button onClick={fetchRouteById} disabled={loading || !inputId}>
+        <Button onClick={fetchRouteById} disabled={loading || !inputId} variant={"default"} className="w-40 h-12 text-xl">
           {loading ? "Loading..." : "Fetch Route"}
         </Button>
       </div>
