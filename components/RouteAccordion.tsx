@@ -5,7 +5,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./accordion";
+} from "./ui/accordion";
 
 type Node = {
   address: string;
@@ -50,9 +50,8 @@ export default function RouteAccordion({ route, highlightID }: { route: Route; h
           )}
         </AccordionTrigger>
         <AccordionContent className="bg-gray-50 px-4 py-3 rounded-b-md">
-          <p className="text-gray-700"><strong>Depot:</strong> {depotName}</p>
           <p className="text-gray-700"><strong>Total Distance:</strong> {route.total_distance} km</p>
-          <p className="text-gray-700"><strong>Total Time:</strong> {Math.floor(route.total_time/60/10)} Days {(route.total_time/60%10).toFixed(2)} hours</p>
+          <p className="text-gray-700"><strong>Total Time:</strong> {Math.floor(route.total_time/60/10)} Days {(Math.ceil(route.total_time/60%10))} hours</p>
           <h5 className="mt-2 mb-1 font-semibold text-gray-800">Stops:</h5>
           <ul className="list-disc list-inside text-gray-700">
             {route.nodes.map((node, idx) => (
