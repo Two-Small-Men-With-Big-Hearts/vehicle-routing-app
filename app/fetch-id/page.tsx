@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import RouteAccordion from "@/components/RouteAccordion"
+import { useState } from "react";
+import RouteAccordion from "@/components/RouteAccordion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Node = {
   address: string;
@@ -15,51 +17,59 @@ type Route = {
   nodes: Node[];
 };
 
-export default function Page() {
-  const [routes, setRoutes] = useState<Route[]>([]); 
-  const [loadingId, setLoadingId] = useState(false);   // loading state for Fetch by ID
+export default function FetchIdPage() {
   const [inputId, setInputId] = useState("");
-
+  const [route, setRoute] = useState<Route | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchRouteById = async () => {
     try {
-      setLoadingId(true);
+      setLoading(true);
       const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes/${inputId}`);
       const data = await res.json();
-      console.log(`Data Received: ${data}`);
-      setRoutes(data);
+      if (data && data.length > 0) {
+        setRoute(data[0]); // Assuming API returns an array of routes
+      } else {
+        setRoute(null);
+      }
     } catch (error) {
-      console.log("Failed to fetch by ID");
+      console.error("Failed to fetch route:", error);
+      setRoute(null);
     } finally {
-      setLoadingId(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-10 bg-gray-100">
-      <div className="flex flex-wrap justify-center gap-3 mb-8">
-        <button
-          onClick={fetchRouteById}
-          disabled={loadingId || !inputId}
-          className="px-6 py-3 bg-black text-white rounded-md text-lg font-medium hover:bg-gray-800 transition disabled:opacity-50"
-        >
-          {loadingId ? "Loading..." : "Fetch by ID"}
-        </button>
-
-        <input
+    <div className="flex flex-col items-center w-full">
+      <h2 className="text-2xl font-semibold mt-8 mb-4">Find Deals</h2>
+      <div className="flex space-x-2 mb-8">
+        <Input
           type="text"
           placeholder="Enter Deal ID"
           value={inputId}
           onChange={(e) => setInputId(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-black"
+          className="w-64"
         />
-
+        <Button onClick={fetchRouteById} disabled={loading || !inputId}>
+          {loading ? "Loading..." : "Fetch Route"}
+        </Button>
       </div>
 
-      <div className="w-full max-w-3xl">
-        {routes.map((route, idx) => (
-          <RouteAccordion key={idx} route={route} highlightID={inputId} />
-        ))}
+      <div className="flex w-full max-w-6xl">
+        {/* Accordion section */}
+        <div className="flex-1">
+          {route ? (
+            <RouteAccordion route={route} highlightID={inputId} />
+          ) : (
+            <p className="text-gray-500">No route fetched yet.</p>
+          )}
+        </div>
+
+        {/* Map section */}
+        <div className="flex-1 ml-6 border rounded-md bg-gray-100 h-[500px] flex items-center justify-center">
+          <p className="text-gray-500">Map placeholder (route visualization here)</p>
+        </div>
       </div>
     </div>
   );
