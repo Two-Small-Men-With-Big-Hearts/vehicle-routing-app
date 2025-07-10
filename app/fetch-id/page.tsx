@@ -23,22 +23,28 @@ export default function FetchIdPage() {
   const [loading, setLoading] = useState(false);
 
   const fetchRouteById = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes/${inputId}`);
-      const data = await res.json();
-      if (data && data.length > 0) {
-        setRoute(data[0]); // Assuming API returns an array of routes
-      } else {
-        setRoute(null);
-      }
-    } catch (error) {
-      console.error("Failed to fetch route:", error);
+  try {
+    setLoading(true);
+    const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes`);
+    const data: Route[] = await res.json();
+
+    const routeWithDeal = data.find((r) =>
+      r.nodes.some((node) => node.id === inputId)
+    );
+
+    if (routeWithDeal) {
+      setRoute(routeWithDeal);
+    } else {
       setRoute(null);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error("Failed to fetch route:", error);
+    setRoute(null);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="flex flex-col items-center w-full">
