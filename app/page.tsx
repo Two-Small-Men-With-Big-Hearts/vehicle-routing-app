@@ -1,10 +1,15 @@
-export default function HomePage() {
+import { auth } from "@clerk/nextjs/server";
+
+export default async function HomePage() {
+  const { userId } = await auth();
+
   return (
-    <div className="text-center mt-25">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-4">Welcome to the Vehicle Routing Solver</h2>
-      <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-        Optimize and visualize your vehicle routes. Use the navigation tools to fetch all deals or search for a specific deal ID.
-      </p>
+    <div className="flex flex-col items-center justify-center py-16">
+      {userId && (
+        <p className="text-gray-700 text-lg mt-8 text-center">
+          Find deals through the navbar!
+        </p>
+      )}
     </div>
   );
 }
