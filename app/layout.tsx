@@ -45,18 +45,24 @@ export default function RootLayout({
 
           <header className="flex justify-center items-center p-4 gap-6 h-18 mt-4 pt-15">
             <SignedOut>
-              <div className = "flex justify-center items-center p-4 gap-6 h-18 mt-8 pt-20">
-              <SignInButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 w-25 sm:h-12 px-4 sm:px-5 cursor-pointer bg-black hover:bg-gray-800">
-                  Sign In
-                </button>
-              </SignInButton>
-              <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 w-25 sm:h-12 px-4 sm:px-5 cursor-pointer bg-black hover:bg-gray-800">
-                  Sign Up
-                </button>
-              </SignUpButton>
-             </div> 
+              <div className="flex flex-col items-center justify-center py-16 gap-4 mt-40">
+                <h1 className="text-4xl font-bold text-gray-800 mb-2">Vehicle Routing Solver</h1>
+                <div className="flex space-x-4">
+                  <SignInButton>
+                    <button className="bg-black text-white rounded-full font-medium text-base h-12 px-6 hover:bg-gray-800 transition">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <button className="bg-black text-white rounded-full font-medium text-base h-12 px-6 hover:bg-gray-800 transition">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </div>
+                <p className="text-gray-600 mt-4 max-w-md text-center">
+                  Welcome to the VRP Solver! Please sign in or sign up to access route tools and manage deals.
+                </p>
+              </div>
             </SignedOut>
             
 
@@ -97,8 +103,8 @@ export default function RootLayout({
                     </Button>
                   </Link>
                 </div>
-              </nav>
-             <div className="mr-20"><UserButton /></div> 
+                <div className="ml-140"><UserButton /></div>
+              </nav> 
             </SignedIn>
           </header>
           {children}
