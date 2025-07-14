@@ -10,6 +10,11 @@ export default async function Page() {
   }
 
   const user = await currentUser();
+  const email = user?.emailAddresses[0].emailAddress;
+
+  if (!email || !email.endsWith("@twosmallmen.com")) {
+    redirect("/unauthorized");
+  }
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen py-10 bg-gray-100 mt-20">
