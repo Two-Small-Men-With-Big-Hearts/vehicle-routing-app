@@ -47,7 +47,7 @@ export default function FetchIdPage() {
 
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full mt-20">
       <h2 className="text-2xl font-semibold mt-8 mb-4">Find Deals</h2>
       <div className="flex space-x-2 mb-8">
         <Input
