@@ -65,7 +65,7 @@ export default function RouteAccordion({
       <AccordionItem value="item-1">
         <AccordionTrigger className="flex justify-between px-4 py-3">
           <div className="flex flex-col text-left">
-            <span className="text-base font-medium text-gray-800">
+            <span className="text-lg font-medium text-gray-800">
               Depot: {depotName} ({numDeals} Deals)
             </span>
           <span><strong>Total Distance:</strong> {route.total_distance} km | <strong>Total Time:</strong>{" "}
