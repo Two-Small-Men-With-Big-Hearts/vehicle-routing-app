@@ -15,6 +15,7 @@ import Image from "next/image";
 import logo from "./imgs/maple_leaf_website_logo.png";
 import { ReactNode } from "react";
 import { Button } from "../components/ui/button";
+import AuthorizedNavbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,44 +68,7 @@ export default function RootLayout({
             
 
             <SignedIn>
-              <nav className="w-full flex items-center justify-start px-6 py-4 bg-white shadow-md">
-                <div className="flex items-center space-x-5">
-                  <Link href="/">
-                    <Image
-                      src={logo}
-                      alt="Two Small Men Logo"
-                      width={200}
-                      height={100}
-                      className="cursor-pointer"
-                    />
-                  </Link>
-                  <Link href="/">
-                    <h1 className="text-3xl font-bold text-gray-800 cursor-pointer ml-5">
-                      Vehicle Routing Solver
-                    </h1>
-                  </Link>
-                </div>
-                <div className="flex space-x-6 ml-40">
-                  <Link href="/fetch-all">
-                    <Button
-                      variant="default"
-                      className="w-50 h-14 text-xl bg-black hover:bg-gray-800"
-                    >
-                      Fetch All Deals
-                    </Button>
-                  </Link>
-
-                  <Link href="/fetch-id">
-                    <Button
-                      variant="default"
-                      className="w-50 h-14 text-xl bg-black hover:bg-gray-800"
-                    >
-                      Visualize Routes
-                    </Button>
-                  </Link>
-                </div>
-                <div className="ml-140"><UserButton /></div>
-              </nav> 
+              <AuthorizedNavbar/>
             </SignedIn>
           </header>
           {children}
