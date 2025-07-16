@@ -103,6 +103,9 @@ export default function RouteAccordion({
             {route.nodes.map((node, idx) => {
               const isDepotStart = idx === 0;
               const isDepotEnd = idx === route.nodes.length - 1;
+
+              if (isDepotEnd || isDepotStart) return null;
+
               const color =
                 isDepotStart || isDepotEnd
                   ? "bg-gray-200 text-gray-700"
