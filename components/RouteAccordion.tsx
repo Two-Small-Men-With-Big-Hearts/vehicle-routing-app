@@ -29,6 +29,30 @@ const formatDepotAddress = (fullAddress: string): string => {
   return parts.slice(len - 3).join(", ");
 };
 
+// Generate a color from a string (hash-based)
+const availableColors = [
+  "bg-red-100 text-red-700",
+  "bg-blue-100 text-blue-700",
+  "bg-green-100 text-green-700",
+  "bg-yellow-100 text-yellow-700",
+  "bg-purple-100 text-purple-700",
+  "bg-pink-100 text-pink-700",
+  "bg-indigo-100 text-indigo-700",
+  "bg-teal-100 text-teal-700",
+];
+
+const idColorMap = new Map<string, string>();
+let nextColorIndex = 0;
+
+const getColorForId = (id: string) => {
+  if (!idColorMap.has(id)) {
+    const color = availableColors[nextColorIndex % availableColors.length];
+    idColorMap.set(id, color);
+    nextColorIndex++;
+  }
+  return idColorMap.get(id)!;
+};
+
 export default function RouteAccordion({
   route,
   highlightID,
@@ -68,9 +92,12 @@ export default function RouteAccordion({
             <span className="text-lg font-medium text-gray-800">
               Depot: {depotName} ({numDeals} Deals)
             </span>
-          <span><strong>Total Distance:</strong> {route.total_distance} km | <strong>Total Time:</strong>{" "}
-            {Math.floor(route.total_time / 60 / 10)} Days{" "}
-            {Math.ceil((route.total_time / 60) % 10)} hours</span>
+            <span>
+              <strong>Total Distance:</strong> {route.total_distance} km |{" "}
+              <strong>Total Time:</strong>{" "}
+              {Math.floor(route.total_time / 60 / 10)} Days{" "}
+              {Math.ceil((route.total_time / 60) % 10)} hours
+            </span>
           </div>
           {containsDeal && (
             <span className="ml-2 px-2 py-0.5 text-green-700 bg-green-100 rounded-full text-xs font-semibold whitespace-nowrap">
@@ -98,17 +125,13 @@ export default function RouteAccordion({
                 <li key={idx} className="flex items-start gap-2">
                   {/* Badge */}
                   <span
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full mt-1
-            ${
-              isDepotStart || isDepotEnd
-                ? "bg-gray-200 text-gray-700"
-                : node.type === "Pickup"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-pink-100 text-pink-700"
-            }
-          `}
+                    className={`text-xs font-medium px-3 py-0.5 rounded-full mt-1 ${
+                      isDepotStart || isDepotEnd 
+                        ? "bg-gray-200 text-gray-700"
+                        : getColorForId(node.id)
+                    }`}
                   >
-                    {isDepotStart ? "" : isDepotEnd ? "" : node.type}
+                    {isDepotStart ? "" : isDepotEnd ? "" : node.type === "Pickup" ? "P" : "D"}
                   </span>
 
                   {/* Deal info */}
@@ -118,7 +141,7 @@ export default function RouteAccordion({
                       <span className="block text-sm text-gray-500">
                         {isDepotStart || isDepotEnd
                           ? formatDepotAddress(node.address)
-                          : node.address}{" "}
+                          : node.address}{""}
                         (ID: {node.id})
                       </span>
                     )}
@@ -132,7 +155,7 @@ export default function RouteAccordion({
             onClick={() => setShowDetails(!showDetails)}
             className="mt-3 text-sm text-blue-600 hover:underline focus:outline-none"
           >
-            {showDetails ? "Hide details" : "View more"}
+            {showDetails ? "Hide Details" : "Show Details"}
           </button>
         </AccordionContent>
       </AccordionItem>

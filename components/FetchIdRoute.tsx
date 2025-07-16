@@ -9,6 +9,7 @@ type Node = {
   address: string;
   dealname: string;
   id: string;
+  type: "Pickup" | "Dropoff";
 };
 
 type Route = {
