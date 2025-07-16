@@ -48,7 +48,7 @@ export default function FetchIdClient() {
 
   return (
     <>
-      <div className="flex space-x-2 mb-8">
+      <div className="flex space-x-3 mb-8">
         <Input
           type="text"
           placeholder="Enter Deal ID"
@@ -61,7 +61,7 @@ export default function FetchIdClient() {
         </Button>
       </div>
 
-      <div className="flex w-full max-w-6xl">
+      <div className="flex w-full max-w-7xl">
         {/* Accordion section */}
         <div className="flex-1">
           {route ? (
@@ -72,7 +72,8 @@ export default function FetchIdClient() {
         </div>
 
         {/* Map section */}
-        <div className="flex-1 ml-6 border rounded-md bg-gray-100 h-[500px] flex items-center justify-center">
+        <div className="flex-1 ml-3 border rounded-md bg-gray-100 h-[500px] flex items-center justify-center">
+          {/* Add map fetching logic here, if we can't fetch it, then return "Error 404: Couldn't Fetch Route" */}
           <p className="text-gray-500">Map placeholder (route visualization here)</p>
         </div>
       </div>
