@@ -7,6 +7,7 @@ type Node = {
   address: string;
   dealname: string;
   id: string;
+  type: "Pickup" | "Dropoff";
 };
 
 type Route = {
@@ -23,9 +24,19 @@ export default function ClientRoutes() {
   const fetchRoutes = async () => {
     try {
       setLoadingAll(true);
-      const res = await fetch("https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes");
-      const data = await res.json();
-      setRoutes(data);
+      const res = await fetch(
+        "https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes"
+      );
+      const data: Route[] = await res.json();
+
+      // Sort by number of unique dealnames descending
+      const sorted = data.sort((a, b) => {
+        const uniqueA = new Set(a.nodes.map((n) => n.dealname)).size;
+        const uniqueB = new Set(b.nodes.map((n) => n.dealname)).size;
+        return uniqueB - uniqueA;
+      });
+
+      setRoutes(sorted);
     } catch (error) {
       console.error("Failed to fetch routes:", error);
     } finally {
@@ -53,7 +64,7 @@ export default function ClientRoutes() {
         />
       </div>
 
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-5xl">
         {routes.map((route, idx) => (
           <RouteAccordion key={idx} route={route} highlightID={inputId} />
         ))}
