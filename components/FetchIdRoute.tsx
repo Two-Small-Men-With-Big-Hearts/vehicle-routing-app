@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import RouteAccordion from "@/components/RouteAccordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,18 +20,21 @@ type Route = {
 };
 
 export default function FetchIdClient() {
-  const [inputId, setInputId] = useState("");
+  const searchParams = useSearchParams();
+  const defaultDealId = searchParams.get("page") || "";
+
+  const [inputId, setInputId] = useState(defaultDealId);
   const [route, setRoute] = useState<Route | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchRouteById = async () => {
+  const fetchRouteById = async (dealId: string) => {
     try {
       setLoading(true);
       const res = await fetch(`https://tsm-vrp-004d6e48b070.herokuapp.com/api/routes`);
       const data: Route[] = await res.json();
 
       const routeWithDeal = data.find((r) =>
-        r.nodes.some((node) => node.id === inputId)
+        r.nodes.some((node) => node.id === dealId)
       );
 
       if (routeWithDeal) {
@@ -46,6 +50,13 @@ export default function FetchIdClient() {
     }
   };
 
+  // Auto-fetch when URL param exists
+  useEffect(() => {
+    if (defaultDealId) {
+      fetchRouteById(defaultDealId);
+    }
+  }, [defaultDealId]);
+
   return (
     <>
       <div className="flex space-x-3 mb-8">
@@ -56,7 +67,12 @@ export default function FetchIdClient() {
           onChange={(e) => setInputId(e.target.value)}
           className="w-64 h-12"
         />
-        <Button onClick={fetchRouteById} disabled={loading || !inputId} variant={"default"} className="w-40 h-12 text-xl">
+        <Button
+          onClick={() => fetchRouteById(inputId)}
+          disabled={loading || !inputId}
+          variant={"default"}
+          className="w-40 h-12 text-xl"
+        >
           {loading ? "Loading..." : "Fetch Route"}
         </Button>
       </div>
@@ -73,7 +89,7 @@ export default function FetchIdClient() {
 
         {/* Map section */}
         <div className="flex-1 ml-3 border rounded-md bg-gray-100 h-[500px] flex items-center justify-center">
-          {/* Add map fetching logic here, if we can't fetch it, then return "Error 404: Couldn't Fetch Route" */}
+          {/* Add map fetching logic here */}
           <p className="text-gray-500">Map placeholder (route visualization here)</p>
         </div>
       </div>
