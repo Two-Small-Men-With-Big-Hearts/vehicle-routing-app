@@ -93,8 +93,8 @@ export default function RouteAccordion({
             </span>
           </div>
           {containsDeal && (
-            <span className="ml-2 px-2 py-0.5 text-green-700 bg-green-100 rounded-full text-xs font-semibold whitespace-nowrap">
-              Contains ID ✅
+            <span className="ml-auto px-2 py-0.5 text-green-700 bg-green-100 rounded-full text-xs font-semibold whitespace-nowrap">
+              ✅
             </span>
           )}
         </AccordionTrigger>
