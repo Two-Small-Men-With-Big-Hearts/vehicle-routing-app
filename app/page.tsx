@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Input } from "@/components/ui/input";
 import { fetchDealsFromBackend } from "@/components/FetchDeals";
+import { useRouter } from "next/navigation";
 
 type Deal = {
   id: string;
@@ -15,6 +16,8 @@ export default function LandingPage() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDeals, setFilteredDeals] = useState<Deal[]>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAndSetDeals = async () => {
@@ -55,7 +58,7 @@ export default function LandingPage() {
             <li
               key={deal.id}
               className="p-3 hover:bg-gray-200 border-b cursor-pointer"
-              onClick={() => console.log("Selected:", deal)}
+              onClick={() => router.push(`/fetch-id?page=${deal.id}`)}
             >
               <strong>{deal.dealname}</strong> – ID: {deal.id}
             </li>
