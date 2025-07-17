@@ -9,7 +9,7 @@ import { Button } from "./ui/button";
 export default function AuthorizedNavbar() {
   return (
     <nav className="w-full flex items-center justify-start px-6 py-4 bg-white shadow-md">
-      <div className="flex items-center space-x-5">
+      <div className="flex items-center space-x-5 hover:cursor-pointer">
         <Link href="/">
           <Image
             src={logo}
@@ -29,7 +29,7 @@ export default function AuthorizedNavbar() {
         <Link href="/fetch-all">
           <Button
             variant="default"
-            className="w-50 h-14 text-xl bg-black hover:bg-gray-800"
+            className="w-50 h-14 text-xl bg-black hover:bg-gray-800 hover:cursor-pointer"
           >
             Fetch All Deals
           </Button>
@@ -38,7 +38,7 @@ export default function AuthorizedNavbar() {
         <Link href="/fetch-id">
           <Button
             variant="default"
-            className="w-50 h-14 text-xl bg-black hover:bg-gray-800"
+            className="w-50 h-14 text-xl bg-black hover:bg-gray-800 hover:cursor-pointer"
           >
             Visualize Routes
           </Button>
