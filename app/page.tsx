@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Input } from "@/components/ui/input";
-import { fetchDealsFromBackend } from "@/components/FetchDeals";
 import { useRouter } from "next/navigation";
 
 type Deal = {
@@ -16,19 +15,24 @@ export default function LandingPage() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDeals, setFilteredDeals] = useState<Deal[]>([]);
-
   const router = useRouter();
 
+  // Fetch only if signed in
   useEffect(() => {
-    const fetchAndSetDeals = async () => {
-      const email = user?.emailAddresses?.[0]?.emailAddress || "";
-      if (!isSignedIn || !email.endsWith("@twosmallmen.com")) return;
+    const fetchDeals = async () => {
+      const email = user?.emailAddresses?.[0]?.emailAddress;
+      if (!isSignedIn || !email?.endsWith("@twosmallmen.com")) return;
 
-      const data = await fetchDealsFromBackend();
-      setDeals(data);
+      try {
+        const res = await fetch("https://tsm-vrp-004d6e48b070.herokuapp.com/api/fetch-deals");
+        const data = await res.json();
+        setDeals(data);
+      } catch (err) {
+        console.error("Error fetching deals:", err);
+      }
     };
 
-    fetchAndSetDeals();
+    fetchDeals();
   }, [isSignedIn, user]);
 
   useEffect(() => {
@@ -43,31 +47,38 @@ export default function LandingPage() {
 
   return (
     <main className="flex flex-col items-center justify-start text-white px-6 py-12 min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 font-serif">Find a Deal</h1>
+      {/* Render search bar only when signed in */}
+      {isSignedIn && (
+        <> <h1 className="text-4xl font-bold mb-6 font-serif">Find a Deal</h1>
+          <Input
+            placeholder="Search by deal name or ID"
+            className="max-w-xl w-full px-4 py-3 mb-4 rounded-lg bg-white text-black border-black/40"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-      <Input
-        placeholder="Search by deal name or ID"
-        className="max-w-xl w-full px-4 py-3 mb-4 rounded-lg bg-white text-black border border-black/40"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+          {searchTerm && filteredDeals.length > 0 && (
+            <ul className="bg-white text-black rounded-md shadow-md max-w-xl w-full mt-2">
+              {filteredDeals.map((deal) => (
+                <li
+                  key={deal.id}
+                  className="p-3 hover:bg-gray-200 border-b cursor-pointer"
+                  onClick={() => router.push(`/fetch-id?page=${deal.id}`)}
+                >
+                  <strong>{deal.dealname}</strong> – ID: {deal.id}
+                </li>
+              ))}
+            </ul>
+          )}
 
-      {searchTerm && filteredDeals.length > 0 && (
-        <ul className="bg-white text-black rounded-md shadow-md max-w-xl w-full mt-2">
-          {filteredDeals.map((deal) => (
-            <li
-              key={deal.id}
-              className="p-3 hover:bg-gray-200 border-b cursor-pointer"
-              onClick={() => router.push(`/fetch-id?page=${deal.id}`)}
-            >
-              <strong>{deal.dealname}</strong> – ID: {deal.id}
-            </li>
-          ))}
-        </ul>
+          {searchTerm && filteredDeals.length === 0 && (
+            <p className="text-gray-800 mt-4 text-xl font-semibold">No deals found.</p>
+          )}
+        </>
       )}
 
-      {searchTerm && filteredDeals.length === 0 && (
-        <p className="text-gray-800 mt-4 text-xl font-semibold">No deals found.</p>
+      {!isSignedIn && (
+        <p className="text-gray-400 mt-4"></p>
       )}
     </main>
   );
