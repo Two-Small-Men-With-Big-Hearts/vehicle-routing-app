@@ -20,12 +20,6 @@ type Route = {
   nodes: Node[];
 };
 
-const formatDepotAddress = (fullAddress: string): string => {
-  const parts = fullAddress.split(",").map((s) => s.trim());
-  const len = parts.length;
-  if (len < 3) return fullAddress;
-  return parts.slice(len - 3).join(", ");
-};
 
 const availableColors = [
   "bg-red-100 text-red-700",
@@ -57,9 +51,7 @@ export default function RouteAccordion({
   highlightID?: string;
 }) {
 
-  const depotName = route.nodes[0]?.address
-    ? formatDepotAddress(route.nodes[0].address)
-    : "Depot:";
+  const depotName = route.nodes[0]?.address || "Depot:";
 
   const containsDeal = highlightID
     ? route.nodes.some((node) => node.id === highlightID)
