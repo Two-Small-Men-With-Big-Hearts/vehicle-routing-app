@@ -57,9 +57,8 @@ export default function RouteAccordion({
   highlightID?: string;
 }) {
 
-  const depotName = route.nodes[0]?.address
-    ? formatDepotAddress(route.nodes[0].address)
-    : "Depot:";
+  const depotName = route.nodes[0]?.address || "Depot:";
+
 
   const containsDeal = highlightID
     ? route.nodes.some((node) => node.id === highlightID)
